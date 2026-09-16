@@ -1,0 +1,6 @@
+[
+  {"id": 1, "titulo": "Stranger Things", "genero": "Ciencia Ficción", "rating": 8.7},
+  {"id": 2, "titulo": "Dark", "genero": "Ciencia Ficción", "rating": 8.7},
+  {"id": 3, "titulo": "Breaking Bad", "genero": "Drama", "rating": 9.5},
+  {"id": 4, "titulo": "The Office", "genero": "Comedia", "rating": 8.9}
+]
