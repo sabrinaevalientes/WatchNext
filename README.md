@@ -40,3 +40,22 @@ La búsqueda secuencial presenta un crecimiento de tiempo directamente proporcio
 Ejecutar menú principal:
 ```bash
 python main.py
+
+
+## TP3: Árbol Binario de Búsqueda (BST)
+
+En esta etapa incorporamos un Árbol Binario de Búsqueda (`ArbolBinarioBusqueda`) para gestionar el catálogo de series de **WatchNext**, utilizando como clave de ordenamiento el **título de la serie** (orden alfabético).
+
+### Funcionalidades implementadas:
+- **Inserción:** Inserta de forma recursiva manteniendo la propiedad del BST.
+- **Búsqueda Eficiente:** Búsqueda recursiva con complejidad de tiempo $O(\log n)$ en promedio.
+- **Recorridos:**
+  - `In-Order`: Muestra el catálogo ordenado alfabéticamente.
+  - `Pre-Order`: Permite visualizar/respaldar la estructura jerárquica desde la raíz.
+  - `Post-Order`: Procesa primero las hojas.
+
+### Comparación técnica: Búsqueda Secuencial (TP2) vs. BST (TP3)
+| Estructura | Complejidad Promedio | Peor Caso |
+| :--- | :--- | :--- |
+| **Lista Lineal (TP2)** | $O(n)$ | $O(n)$ |
+| **Árbol Binario (TP3)** | **$O(\log n)$** | $O(n)$ *(si el árbol se desbalancea)* |

@@ -1,76 +1,65 @@
-import json
-from serie import Serie, Genero, Usuario
+from serie import Serie
+from arbol import ArbolBinarioBusqueda
 
-def cargar_series(ruta_archivo):
-    catalogo = []
-    try:
-        with open(ruta_archivo, "r", encoding="utf-8") as archivo:
-            datos = json.load(archivo)
-            for item in datos:
-                s = Serie(item["id"], item["titulo"], item["genero"], item["rating"])
-                catalogo.append(s)
-    except FileNotFoundError:
-        print(f"❌ No se encontró el archivo: {ruta_archivo}")
-    return catalogo
+def cargar_datos_prueba(arbol):
+    series = [
+        Serie("Dark", "Ciencia Ficción", 8.7, 2017),
+        Serie("Breaking Bad", "Drama", 9.5, 2008),
+        Serie("Stranger Things", "Fantasía", 8.7, 2016),
+        Serie("Arcane", "Animación", 9.0, 2021),
+        Serie("The Office", "Comedia", 8.9, 2005)
+    ]
+    for s in series:
+        arbol.insertar(s)
 
 def main():
-    catalogo = cargar_series("series.json")
-    usuario_actual = Usuario("Invitado")
+    arbol_series = ArbolBinarioBusqueda()
+    cargar_datos_prueba(arbol_series)
 
     while True:
-        print("\n=========================================")
-        print(f"   📺 WATCHNEXT — Usuario: {usuario_actual.nombre}")
-        print("=========================================")
-        print("1. Listar catálogo completo")
-        print("2. Buscar por título")
-        print("3. Filtrar por género")
-        print("4. Calificar una serie (Usuario)")
+        print("\n========================================")
+        print("          📺 WATCHNEXT — TERMINAL      ")
+        print("========================================")
+        print("1. Buscar serie en BST (O(log n))")
+        print("2. Listar series ordenadas alfabéticamente (In-Order)")
+        print("3. Ver estructura del árbol (Pre-Order / Post-Order)")
+        print("4. Agregar nueva serie")
         print("0. Salir")
-        print("-----------------------------------------")
-
+        print("----------------------------------------")
+        
         opcion = input("Seleccione una opción: ").strip()
 
         if opcion == "1":
-            print("\n--- CATÁLOGO COMPLETO ---")
-            for serie in catalogo:
-                print(serie)
+            titulo = input("\nIngrese título a buscar: ").strip()
+            res = arbol_series.buscar(titulo)
+            if res:
+                print(f"\n✅ Serie encontrada: {res}")
+            else:
+                print(f"\n❌ No se encontró '{titulo}'.")
 
         elif opcion == "2":
-            busqueda = input("\nIngrese el título a buscar: ").strip().lower()
-            print(f"\n--- RESULTADOS PARA '{busqueda}' ---")
-            encontrados = False
-            for serie in catalogo:
-                if busqueda in serie.titulo.lower():
-                    print(serie)
-                    encontrados = True
-            if not encontrados:
-                print("❌ No se encontraron coincidencias.")
+            print("\n📋 Catálogo (In-Order / Orden alfabético):")
+            for s in arbol_series.recorrer_inorder():
+                print(f"  - {s}")
 
         elif opcion == "3":
-            genero_buscado = input("\nIngrese el género (ej. Comedia, Drama): ").strip().lower()
-            print(f"\n--- SERIES DE GÉNERO: '{genero_buscado}' ---")
-            encontrados = False
-            for serie in catalogo:
-                if serie.genero == genero_buscado:  # Compara usando la clase Genero
-                    print(serie)
-                    encontrados = True
-            if not encontrados:
-                print("❌ No hay series en ese género.")
+            print("\n🔍 Pre-Order:")
+            for s in arbol_series.recorrer_preorder():
+                print(f"  - {s.titulo}")
+            print("\n🔍 Post-Order:")
+            for s in arbol_series.recorrer_postorder():
+                print(f"  - {s.titulo}")
 
         elif opcion == "4":
-            try:
-                id_serie = int(input("\nIngrese el ID de la serie a calificar: "))
-                serie_encontrada = next((s for s in catalogo if s.id == id_serie), None)
-                if serie_encontrada:
-                    nuevo_rating = float(input(f"Ingrese el nuevo rating para '{serie_encontrada.titulo}' (0-10): "))
-                    usuario_actual.calificar_serie(serie_encontrada, nuevo_rating)
-                else:
-                    print("❌ No se encontró ninguna serie con ese ID.")
-            except ValueError as e:
-                print(f"❌ Error de entrada: {e}")
+            t = input("Título: ").strip()
+            g = input("Género: ").strip()
+            r = float(input("Rating: "))
+            a = int(input("Año: "))
+            arbol_series.insertar(Serie(t, g, r, a))
+            print(f"\n✅ '{t}' agregada al BST.")
 
         elif opcion == "0":
-            print("\n¡Gracias por usar WatchNext! 👋")
+            print("\n👋 ¡Hasta luego!")
             break
 
 if __name__ == "__main__":
