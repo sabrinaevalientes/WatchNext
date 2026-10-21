@@ -74,3 +74,21 @@ Insertamos 1.000 series ordenadas alfabéticamente (`Serie_0001` a `Serie_1000`)
 
 ### 3. Conclusión Técnica
 El balance importa porque evita que el árbol degeneren en una lista lineal cuando se insertan elementos ordenados. Las rotaciones automáticas del AVL garantizan una altura acotada por $O(\log n)$, manteniendo las búsquedas eficientes en el peor de los casos.
+
+
+## TP5: Árboles Generales / N-arios (Jerarquía del Dominio)
+
+En esta etapa implementamos un Árbol General N-ario (`ArbolGeneralCategorias`) para representar la estructura jerárquica natural de las categorías y subgéneros en **WatchNext**.
+
+### Estructura Jerárquica:
+- **Raíz:** Series
+  - **Ciencia Ficción**
+    - Cyberpunk
+    - Viajes temporales
+    - Inteligencia artificial
+  - **Acción**
+  - **Comedia**
+
+### Funcionalidades:
+- Búsqueda recursiva de nodos dentro del árbol jerárquico.
+- Incorporación de la opción **"Explorar categorías"** en el menú interactivo de la terminal.

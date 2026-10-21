@@ -1,20 +1,10 @@
 from serie import Serie
 from arbol import ArbolBinarioBusqueda
-
-def cargar_datos_prueba(arbol):
-    series = [
-        Serie("Dark", "Ciencia Ficción", 8.7, 2017),
-        Serie("Breaking Bad", "Drama", 9.5, 2008),
-        Serie("Stranger Things", "Fantasía", 8.7, 2016),
-        Serie("Arcane", "Animación", 9.0, 2021),
-        Serie("The Office", "Comedia", 8.9, 2005)
-    ]
-    for s in series:
-        arbol.insertar(s)
+from arbol_general import inicializar_jerarquia_ejemplo
 
 def main():
     arbol_series = ArbolBinarioBusqueda()
-    cargar_datos_prueba(arbol_series)
+    arbol_categorias = inicializar_jerarquia_ejemplo()
 
     while True:
         print("\n========================================")
@@ -22,8 +12,8 @@ def main():
         print("========================================")
         print("1. Buscar serie en BST (O(log n))")
         print("2. Listar series ordenadas alfabéticamente (In-Order)")
-        print("3. Ver estructura del árbol (Pre-Order / Post-Order)")
-        print("4. Agregar nueva serie")
+        print("3. Explorar categorías (Árbol General N-ario)")
+        print("4. Ver estructura del árbol BST (Pre-Order / Post-Order)")
         print("0. Salir")
         print("----------------------------------------")
         
@@ -43,20 +33,13 @@ def main():
                 print(f"  - {s}")
 
         elif opcion == "3":
+            print("\n🌳 Jerarquía de Categorías de WatchNext:")
+            arbol_categorias.mostrar_jerarquia()
+
+        elif opcion == "4":
             print("\n🔍 Pre-Order:")
             for s in arbol_series.recorrer_preorder():
                 print(f"  - {s.titulo}")
-            print("\n🔍 Post-Order:")
-            for s in arbol_series.recorrer_postorder():
-                print(f"  - {s.titulo}")
-
-        elif opcion == "4":
-            t = input("Título: ").strip()
-            g = input("Género: ").strip()
-            r = float(input("Rating: "))
-            a = int(input("Año: "))
-            arbol_series.insertar(Serie(t, g, r, a))
-            print(f"\n✅ '{t}' agregada al BST.")
 
         elif opcion == "0":
             print("\n👋 ¡Hasta luego!")
