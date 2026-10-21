@@ -1,55 +1,51 @@
 import time
-import random
-from serie import Serie, Genero
-from arbol import ArbolBusqueda
+from serie import Serie
+from arbol import ArbolBinarioBusqueda
+from arbol_avl import ArbolAVL
 
-def generar_datos_prueba(n):
-    genero_demo = Genero("Drama")
-    catalogo_lista = []
-    
-    for i in range(n):
-        s = Serie(i, f"Serie_{i}", genero_demo, rating=8.0)
-        catalogo_lista.append(s)
-    
-    lista_para_arbol = list(catalogo_lista)
-    random.shuffle(lista_para_arbol)
-    
-    arbol = ArbolBusqueda()
-    for s in lista_para_arbol:
-        arbol.insertar(s)
-        
-    return catalogo_lista, arbol
+def calcular_altura_bst(nodo):
+    if not nodo:
+        return 0
+    return 1 + max(calcular_altura_bst(nodo.izq), calcular_altura_bst(nodo.der))
 
-def busqueda_secuencial(catalogo_lista, titulo_buscado):
-    titulo_buscado = titulo_buscado.lower()
-    for serie in catalogo_lista:
-        if serie.titulo.lower() == titulo_buscado:
-            return serie
-    return None
+def experimento_desbalance():
+    print("========================================")
+    print(" 🧪 EXPERIMENTO TP4: BST vs. AVL ")
+    print("========================================")
 
-def ejecutar_experimentos():
-    tamanos = [1000, 10000, 100000]
+    # Caso de prueba: Datos insertados en ORDEN ALFABÉTICO (peor caso para BST)
+    titulos_ordenados = [f"Serie_{i:04d}" for i in range(1, 1001)] # 1000 series ordenadas
     
-    print(f"\n{'N ELEMENTOS':<15} | {'BÚSQUEDA SECUENCIAL':<20} | {'BÚSQUEDA EN ÁRBOL':<20}")
-    print("-" * 62)
-    
-    for n in tamanos:
-        catalogo_lista, arbol = generar_datos_prueba(n)
-        target_titulo = f"Serie_{n - 1}"
-        
-        # Medición Secuencial
-        inicio = time.perf_counter()
-        busqueda_secuencial(catalogo_lista, target_titulo)
-        fin = time.perf_counter()
-        tiempo_secuencial_ms = (fin - inicio) * 1000
+    bst = ArbolBinarioBusqueda()
+    avl = ArbolAVL()
 
-        # Medición en Árbol Binario
-        inicio = time.perf_counter()
-        arbol.buscar_por_titulo(target_titulo)
-        fin = time.perf_counter()
-        tiempo_arbol_ms = (fin - inicio) * 1000
+    # Carga de datos
+    for t in titulos_ordenados:
+        s = Serie(t, "Drama", 8.0, 2020)
+        bst.insertar(s)
+        avl.insertar(s)
 
-        print(f"{n:<15} | {tiempo_secuencial_ms:.4f} ms{'':<11} | {tiempo_arbol_ms:.4f} ms")
+    altura_bst = calcular_altura_bst(bst.raiz)
+    altura_avl = avl.obtener_altura_total()
+
+    print(f"📊 Total de elementos insertados: {len(titulos_ordenados)}")
+    print(f"🌲 Altura del árbol BST común: {altura_bst} (degenerado a O(n))")
+    print(f"⚖️ Altura del árbol AVL:        {altura_avl} (garantizado en O(log n))")
+
+    # Medición de búsqueda en el peor caso (último elemento)
+    elemento_buscar = "Serie_1000"
+
+    inicio = time.perf_counter()
+    res_bst = bst.buscar(elemento_buscar)
+    tiempo_bst = (time.perf_counter() - inicio) * 1000
+
+    inicio = time.perf_counter()
+    res_avl = avl.buscar(elemento_buscar)
+    tiempo_avl = (time.perf_counter() - inicio) * 1000
+
+    print("\n⏱️ RESULTADOS DE BÚSQUEDA:")
+    print(f"  - Tiempo BST: {tiempo_bst:.4f} ms")
+    print(f"  - Tiempo AVL: {tiempo_avl:.4f} ms")
 
 if __name__ == "__main__":
-    ejecutar_experimentos()
+    experimento_desbalance()

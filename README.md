@@ -59,3 +59,18 @@ En esta etapa incorporamos un Árbol Binario de Búsqueda (`ArbolBinarioBusqueda
 | :--- | :--- | :--- |
 | **Lista Lineal (TP2)** | $O(n)$ | $O(n)$ |
 | **Árbol Binario (TP3)** | **$O(\log n)$** | $O(n)$ *(si el árbol se desbalancea)* |
+
+
+## TP4: Árbol AVL (Auto-balanceado)
+
+### 1. Experimento de Desbalance
+Insertamos 1.000 series ordenadas alfabéticamente (`Serie_0001` a `Serie_1000`) para simular la degradación de la estructura.
+
+### 2. Resultados Obtenidos
+| Estructura | Altura del Árbol | Complejidad de Búsqueda |
+| :--- | :--- | :--- |
+| **BST Común (TP3)** | **1000** | $O(n)$ *(degeneró en lista enlazada)* |
+| **Árbol AVL (TP4)** | **10** ($\approx \log_2(1000)$) | **$O(\log n)$** *(balance perfecto)* |
+
+### 3. Conclusión Técnica
+El balance importa porque evita que el árbol degeneren en una lista lineal cuando se insertan elementos ordenados. Las rotaciones automáticas del AVL garantizan una altura acotada por $O(\log n)$, manteniendo las búsquedas eficientes en el peor de los casos.
