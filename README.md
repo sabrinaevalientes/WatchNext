@@ -92,3 +92,7 @@ En esta etapa implementamos un Árbol General N-ario (`ArbolGeneralCategorias`) 
 ### Funcionalidades:
 - Búsqueda recursiva de nodos dentro del árbol jerárquico.
 - Incorporación de la opción **"Explorar categorías"** en el menú interactivo de la terminal.
+
+## TP6: Colas de Prioridad (Max-Heap)
+- **Propósito:** Crear un ranking dinámico basado en el rating de las series.
+- **Implementación:** Estructura de Max-Heap manual para extraer el Top-N de forma eficiente sin necesidad de ordenar todo el conjunto de datos desde cero.
