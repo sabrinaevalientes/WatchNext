@@ -96,3 +96,16 @@ En esta etapa implementamos un Árbol General N-ario (`ArbolGeneralCategorias`) 
 ## TP6: Colas de Prioridad (Max-Heap)
 - **Propósito:** Crear un ranking dinámico basado en el rating de las series.
 - **Implementación:** Estructura de Max-Heap manual para extraer el Top-N de forma eficiente sin necesidad de ordenar todo el conjunto de datos desde cero.
+
+## 📊 TP7: Grafos ("Conectá las cosas")
+
+### Definición y Justificación del Modelo
+* **Vértices:** 
+  * *¿Qué representa cada nodo?* Cada vértice representa una **Serie** individual dentro del catálogo del sistema (instancias de la clase `Serie`).
+* **Aristas:** 
+  * *¿Qué significa que dos elementos estén conectados?* Significa que las producciones **comparten género o similitud temática**, permitiendo establecer pasarelas de recomendación directa para el usuario.
+* **Tipo de grafo:** 
+  * **No dirigido y pesado.** Se define como *no dirigido* porque la relación de similitud o género compartido es simétrica (si una serie A se relaciona con B, la relación aplica recíprocamente). Es *pesado* porque cada arista almacena un valor numérico de peso (entre 0.0 y 1.0) que cuantifica el **grado de similitud** entre ambas series.
+* **Representación:** 
+  * **Lista de adyacencia.** 
+  * *Justificación:* Se selecciona la lista de adyacencia debido a que el catálogo de series conforma un grafo **disperso** (cada serie se conecta únicamente con un subconjunto acotado de producciones afines y no con la totalidad del sistema). Esta estructura optimiza de manera drástica el consumo de memoria y agiliza las operaciones de consulta de vecinos en comparación con una matriz de adyacencia.
