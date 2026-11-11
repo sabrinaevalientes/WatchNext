@@ -1,3 +1,5 @@
+from collections import deque
+
 class GrafoSeries:
     def __init__(self):
         # Diccionario de adyacencia: { serie: { vecino: peso, ... } }
@@ -31,3 +33,44 @@ class GrafoSeries:
                     print(f"     ├── Conectada con: {vecino.titulo} [Similitud: {peso}]")
             else:
                 print("     └── Sin conexiones registradas.")
+
+    def bfs_camino_mas_cercano(self, serie_inicio, titulo_buscado):
+        """Busca una serie objetivo usando BFS (Amplitud) por el camino más corto en aristas."""
+        if serie_inicio not in self.adyacencias:
+            return None
+
+        visitados = {serie_inicio}
+        # La cola guarda tuplas de: (nodo_actual, [camino_recorrido])
+        cola = deque([(serie_inicio, [serie_inicio])])
+
+        while cola:
+            actual, camino = cola.popleft()
+
+            if actual.titulo.lower() == titulo_buscado.lower():
+                return camino
+
+            for vecino in self.adyacencias[actual]:
+                if vecino not in visitados:
+                    visitados.add(vecino)
+                    cola.append((vecino, camino + [vecino]))
+        return None
+
+    def dfs_explorar_red(self, serie_inicio):
+        """Explora toda la red conectada en profundidad (DFS) a partir de una serie."""
+        if serie_inicio not in self.adyacencias:
+            return []
+
+        visitados = set()
+        resultado = []
+        pila = [serie_inicio]
+
+        while pila:
+            actual = pila.pop()
+            if actual not in visitados:
+                visitados.add(actual)
+                resultado.append(actual)
+                # Agregamos los vecinos a la pila en orden inverso para mantener coherencia
+                for vecino in list(self.adyacencias[actual].keys()):
+                    if vecino not in visitados:
+                        pila.append(vecino)
+        return resultado

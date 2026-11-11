@@ -22,9 +22,7 @@ def cargar_datos_iniciales(arbol_bst, heap_series, grafo_series):
         grafo_series.agregar_vertice(s)
 
     # Configuración de conexiones (Aristas con peso de similitud)
-    # Series de Ciencia Ficción conectadas
     grafo_series.agregar_arista(s2, s6, 0.95)  # Dark <-> Interstellar
-    # Conexiones temáticas y de género cruzado
     grafo_series.agregar_arista(s1, s3, 0.75)  # Breaking Bad <-> Stranger Things
     grafo_series.agregar_arista(s3, s5, 0.80)  # Stranger Things <-> Arcane
 
@@ -33,21 +31,23 @@ def main():
     arbol_cat = inicializar_jerarquia_ejemplo()
     heap_series = MaxHeapSeries()
     grafo_series = GrafoSeries()
-    
+
     cargar_datos_iniciales(arbol_series, heap_series, grafo_series)
 
     while True:
         print("\n========================================")
-        print("    📺 WATCHNEXT — TERMINAL (v5)       ")
+        print("       WATCHNEXT — TERMINAL (v6)       ")
         print("========================================")
         print("1. Buscar serie (BST)")
         print("2. Listar catálogo ordenado (In-Order)")
         print("3. Explorar categorías (Árbol General)")
         print("4. Ver Top de series por rating (Max-Heap)")
-        print("5. Ver Red de Recomendaciones (Grafo)")
+        print("5. Ver Red de Conexiones y Recomendaciones (Grafo)")
+        print("6. Buscar conexión más cercana (BFS)")
+        print("7. Explorar red en profundidad (DFS)")
         print("0. Salir")
         print("----------------------------------------")
-        
+
         opcion = input("Seleccione una opción: ").strip()
 
         if opcion == "1":
@@ -59,9 +59,9 @@ def main():
                 print(f"\n❌ No se encontró '{titulo}'.")
 
         elif opcion == "2":
-            print("\n📋 Catálogo Ordenado (In-Order):")
+            print("\n📂 Catálogo Ordenado (In-Order):")
             for s in arbol_series.recorrer_inorder():
-                print(f"  - {s}")
+                print(f" - {s}")
 
         elif opcion == "3":
             print("\n🌳 Jerarquía de Categorías:")
@@ -71,15 +71,56 @@ def main():
             print("\n🏆 Top de Series con Mayor Rating (Max-Heap):")
             top = heap_series.obtener_top(5)
             for idx, s in enumerate(top, 1):
-                print(f"  {idx}. {s.titulo} — ⭐ {s.rating} ({str(s.genero)})")
+                print(f" {idx}. {s.titulo} — ⭐ {s.rating}")
 
         elif opcion == "5":
             print("\n🕸️ Red de Conexiones y Recomendaciones (Grafo):")
             grafo_series.mostrar_red()
 
+        elif opcion == "6":
+            print("\n🔍 BÚSQUEDA DE CAMINO MÁS CORTO (BFS)")
+            titulo_inicio = input("Ingrese el título de la serie de partida: ").strip()
+            titulo_buscado = input("Ingrese el título de la serie que desea encontrar: ").strip()
+            
+            serie_inicio_obj = None
+            for s in grafo_series.adyacencias.keys():
+                if s.titulo.lower() == titulo_inicio.lower():
+                    serie_inicio_obj = s
+                    break
+                    
+            if serie_inicio_obj:
+                camino = grafo_series.bfs_camino_mas_cercano(serie_inicio_obj, titulo_buscado)
+                if camino:
+                    print("\n✨ ¡Camino encontrado (BFS):")
+                    print(" -> ".join([s.titulo for s in camino]))
+                else:
+                    print("\n❌ No se encontró una conexión hacia esa serie.")
+            else:
+                print(f"\n❌ No se encontró la serie de partida '{titulo_inicio}' en el grafo.")
+
+        elif opcion == "7":
+            print("\n🌐 EXPLORACIÓN DE RED EN PROFUNDIDAD (DFS)")
+            titulo_inicio = input("Ingrese el título de la serie para explorar: ").strip()
+            
+            serie_inicio_obj = None
+            for s in grafo_series.adyacencias.keys():
+                if s.titulo.lower() == titulo_inicio.lower():
+                    serie_inicio_obj = s
+                    break
+                    
+            if serie_inicio_obj:
+                exploracion = grafo_series.dfs_explorar_red(serie_inicio_obj)
+                print("\n🚀 Red explorada en profundidad (DFS):")
+                for s in exploracion:
+                    print(f" - {s.titulo} ({s.genero})")
+            else:
+                print(f"\n❌ No se encontró la serie '{titulo_inicio}' en el grafo.")
+
         elif opcion == "0":
             print("\n👋 ¡Hasta luego!")
             break
+        else:
+            print("\n⚠️ Opción inválida. Intente nuevamente.")
 
 if __name__ == "__main__":
     main()
