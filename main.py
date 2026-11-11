@@ -36,15 +36,15 @@ def main():
 
     while True:
         print("\n========================================")
-        print("       WATCHNEXT — TERMINAL (v6)       ")
+        print("         WATCHNEXT — TERMINAL           ")
         print("========================================")
-        print("1. Buscar serie (BST)")
-        print("2. Listar catálogo ordenado (In-Order)")
-        print("3. Explorar categorías (Árbol General)")
-        print("4. Ver Top de series por rating (Max-Heap)")
-        print("5. Ver Red de Conexiones y Recomendaciones (Grafo)")
-        print("6. Buscar conexión más cercana (BFS)")
-        print("7. Explorar red en profundidad (DFS)")
+        print("1. Buscar serie")
+        print("2. Listar catálogo ordenado")
+        print("3. Explorar categorías")
+        print("4. Ver Top de series")
+        print("5. Ver red de recomendaciones")
+        print("6. Buscar conexión más cercana")
+        print("7. Explorar red en profundidad")
         print("0. Salir")
         print("----------------------------------------")
 
@@ -54,21 +54,21 @@ def main():
             titulo = input("\nIngrese título a buscar: ").strip()
             res = arbol_series.buscar(titulo)
             if res:
-                print(f"\n✅ Encontrado: {res}")
+                print(f"\n✅ Encontrado (Estructura: Árbol BST): {res}")
             else:
                 print(f"\n❌ No se encontró '{titulo}'.")
 
         elif opcion == "2":
-            print("\n📂 Catálogo Ordenado (In-Order):")
+            print("\n📂 Catálogo Ordenado (Recorrido In-Order):")
             for s in arbol_series.recorrer_inorder():
                 print(f" - {s}")
 
         elif opcion == "3":
-            print("\n🌳 Jerarquía de Categorías:")
+            print("\n🌳 Jerarquía de Categorías (Árbol General):")
             arbol_cat.mostrar_jerarquia()
 
         elif opcion == "4":
-            print("\n🏆 Top de Series con Mayor Rating (Max-Heap):")
+            print("\n🏆 Top de Series con Mayor Rating (Estructura Max-Heap):")
             top = heap_series.obtener_top(5)
             for idx, s in enumerate(top, 1):
                 print(f" {idx}. {s.titulo} — ⭐ {s.rating}")
@@ -78,7 +78,7 @@ def main():
             grafo_series.mostrar_red()
 
         elif opcion == "6":
-            print("\n🔍 BÚSQUEDA DE CAMINO MÁS CORTO (BFS)")
+            print("\n🔍 BÚSQUEDA DE CAMINO MÁS CORTO [Algoritmo BFS]")
             titulo_inicio = input("Ingrese el título de la serie de partida: ").strip()
             titulo_buscado = input("Ingrese el título de la serie que desea encontrar: ").strip()
             
@@ -99,7 +99,7 @@ def main():
                 print(f"\n❌ No se encontró la serie de partida '{titulo_inicio}' en el grafo.")
 
         elif opcion == "7":
-            print("\n🌐 EXPLORACIÓN DE RED EN PROFUNDIDAD (DFS)")
+            print("\n🌐 EXPLORACIÓN DE RED EN PROFUNDIDAD [Algoritmo DFS]")
             titulo_inicio = input("Ingrese el título de la serie para explorar: ").strip()
             
             serie_inicio_obj = None
